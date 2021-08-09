@@ -21,9 +21,24 @@
 <script src="./editor.md/editormd.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="node_modules/axios/dist/axios.js"></script>
+
+<style>
+
+    .register_body{
+
+        width: 80%;
+        height: 400px;
+        padding-top: 20%;
+
+        padding-left: 10%;
+        padding-right: 10%;
+
+    }
+
+</style>
 <body>
 
-<div class="container">
+<div class="container" id="app">
 
     <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -43,7 +58,7 @@
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li class="active"><a href="#">随笔 <span class="sr-only">(current)</span></a></li>
-                    <li><a href="./list.html">技术文章</a></li>
+                    <li><a href="#">技术文章</a></li>
                     <li class="dropdown">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                            aria-expanded="false">其他 <span class="caret"></span></a>
@@ -77,52 +92,61 @@
         </div><!-- /.container-fluid -->
     </nav>
 
-    <div class="panel panel-default" id="app">
-        <div class="panel-heading">
-            <h3 class="panel-title">{{title}}</h3>
-        </div>
-        <div class="panel-body" v-html="content">
-        </div>
+    <div class="register_body">
+        <form class="form-horizontal">
+            <div class="form-group">
+                <label for="inputEmail3" class="col-sm-2 control-label">账号</label>
+                <div class="col-sm-10">
+                    <input type="email" class="form-control" id="name" v-model="name" placeholder="账号">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputPassword3" class="col-sm-2 control-label">密码</label>
+                <div class="col-sm-10">
+                    <input type="password" class="form-control" id="password"  v-model="password" placeholder="密码">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                    <button type="button" class="btn btn-default" v-on:click="login">登录</button>
+                </div>
+            </div>
+        </form>
     </div>
 
 </div>
-
 <script>
 
     var  vm=new  Vue({
 
         el:"#app",
         data:{
-            content:"",
-            title:"",
+            name:'',
+            nickname:'',
+            password:'',
+            confirm_pass:'',
+
         },
         methods:{
-            info:function (id){
-                axios.get('http://localhost:8000/crm/test/detail?id='+id).then(function (res){
-                    vm.content=res.data.data.content;
-                    vm.title=res.data.data.name;
+
+            login:function (){
+
+                axios.post('http://localhost:8000/crm/user/login',{"name":vm.name,"pass":vm.password}).then(function (res){
+
+                    if (res.data.err == 0){
+
+                        sessionStorage.setItem("login_token",res.data.token)
+                        alert(res.data.msg);
+                    }else{
+
+                        alert(res.data.msg)
+                    }
                 })
             }
+
         }
-
-
     })
-
-    id=getQueryString("id")
-    vm.info(id);
-
-
-    $(function () {
-
-    });
-
-    function getQueryString(name) {
-        let reg = `(^|&)${name}=([^&]*)(&|$)`
-        let r = window.location.search.substr(1).match(reg);
-        if (r != null) return unescape(r[2]); return null;
-    }
-
-
 
 
 </script>
