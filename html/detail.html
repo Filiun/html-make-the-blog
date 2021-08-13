@@ -23,7 +23,7 @@
 <script src="node_modules/axios/dist/axios.js"></script>
 <body>
 
-<div class="container">
+<div class="container" id="app">
 
     <nav class="navbar navbar-default">
         <div class="container-fluid">
@@ -66,18 +66,28 @@
                 </form>
                 <ul class="nav navbar-nav navbar-right">
                     <li><a href="#">创作</a></li>
-                    <li class="dropdown">
-                        <a href="#"  aria-haspopup="true" aria-expanded="false">登录</a>
+
+
+                    <li class="dropdown" v-if="is_login" v-on:click="logout()">
+                        <a href="./logout.html" aria-haspopup="true" aria-expanded="false">{{login_name}}</a>
                     </li>
-                    <li class="dropdown">
-                        <a href="./register.html" >注册</a>
+                    <li class="dropdown" v-else>
+                        <a href="./login.html" aria-haspopup="true" aria-expanded="false">登录</a>
                     </li>
+                    <li class="dropdown" v-if="is_login">
+
+                    </li>
+                    <li class="dropdown" v-else>
+                        <a href="./register.html">注册</a>
+                    </li>
+
+
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
     </nav>
 
-    <div class="panel panel-default" id="app">
+    <div class="panel panel-default">
         <div class="panel-heading">
             <h3 class="panel-title">{{title}}</h3>
         </div>
@@ -95,6 +105,8 @@
         data:{
             content:"",
             title:"",
+            login_name: '',
+            is_login: false,
         },
         methods:{
             info:function (id){
@@ -102,12 +114,40 @@
                     vm.content=res.data.data.content;
                     vm.title=res.data.data.name;
                 })
+            },
+            get_user_info: function () {
+
+                let token = sessionStorage.getItem('login_token')
+                axios.get('http://localhost:8000/crm/user_info', {
+                    headers: {
+                        'Authorization': token,
+                    }
+                }).then(function (res) {
+                    if (res.data.err == 0) {
+                        var user_info = res.data.user_info
+                        console.log(user_info)
+                        var obj = JSON.parse(user_info)
+                        vm.login_name = obj.name
+                        vm.is_login = true
+
+                    } else {
+                        //alert(res.data.msg)
+                    }
+                })
+            },
+            logout:function (){
+
+                sessionStorage.setItem("login_token","")
+                vm.is_login=false
+                window.location="./login.html"
+
             }
         }
 
 
     })
 
+    vm.get_user_info()
     id=getQueryString("id")
     vm.info(id);
 

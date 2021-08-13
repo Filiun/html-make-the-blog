@@ -80,7 +80,7 @@
                     <button type="submit" class="btn btn-default">Submit</button>
                 </form>
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#">创作</a></li>
+                    <li><a href="./index.html">创作</a></li>
                     <li class="dropdown">
                         <a href="#"  aria-haspopup="true" aria-expanded="false">登录</a>
                     </li>
@@ -126,20 +126,41 @@
             nickname:'',
             password:'',
             confirm_pass:'',
-
+            login_name:'',
         },
         methods:{
-
             login:function (){
-
                 axios.post('http://localhost:8000/crm/user/login',{"name":vm.name,"pass":vm.password}).then(function (res){
 
                     if (res.data.err == 0){
 
                         sessionStorage.setItem("login_token",res.data.token)
                         alert(res.data.msg);
+                      //  window.location='./list.html';
+
+                        vm.get_user_info()
+
                     }else{
 
+                        alert(res.data.msg)
+                    }
+                })
+            },
+            get_user_info:function (){
+
+                let token=sessionStorage.getItem('login_token')
+                axios.get('http://localhost:8000/crm/user_info',{
+                    headers:{
+                        'Authorization':token,
+                    }
+                }).then(function (res){
+                    if (res.data.err == 0){
+                        var user_info=res.data.user_info
+                        console.log(user_info)
+                        var obj=JSON.parse(user_info)
+                       vm.login_name=obj
+
+                    }else{
                         alert(res.data.msg)
                     }
                 })
@@ -147,6 +168,8 @@
 
         }
     })
+
+    //vm.get_user_info()
 
 
 </script>
