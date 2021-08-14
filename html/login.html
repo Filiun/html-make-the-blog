@@ -130,7 +130,7 @@
         },
         methods:{
             login:function (){
-                axios.post('http://localhost:8000/crm/user/login',{"name":vm.name,"pass":vm.password}).then(function (res){
+                axios.post('http://82.156.110.139:8000/crm/user/login',{"name":vm.name,"pass":vm.password}).then(function (res){
 
                     if (res.data.err == 0){
 
@@ -149,7 +149,7 @@
             get_user_info:function (){
 
                 let token=sessionStorage.getItem('login_token')
-                axios.get('http://localhost:8000/crm/user_info',{
+                axios.get('http://82.156.110.139:8000/crm/user_info',{
                     headers:{
                         'Authorization':token,
                     }

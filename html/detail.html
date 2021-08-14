@@ -110,7 +110,7 @@
         },
         methods:{
             info:function (id){
-                axios.get('http://localhost:8000/crm/test/detail?id='+id).then(function (res){
+                axios.get('http://82.156.110.139:8000/crm/test/detail?id='+id).then(function (res){
                     vm.content=res.data.data.content;
                     vm.title=res.data.data.name;
                 })
@@ -118,7 +118,7 @@
             get_user_info: function () {
 
                 let token = sessionStorage.getItem('login_token')
-                axios.get('http://localhost:8000/crm/user_info', {
+                axios.get('http://82.156.110.139:8000/crm/user_info', {
                     headers: {
                         'Authorization': token,
                     }
