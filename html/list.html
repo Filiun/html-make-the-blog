@@ -117,7 +117,7 @@
         methods: {
 
             list: function () {
-                axios.get('http://82.156.110.139:8000/crm/test/list').then(function (res) {
+                axios.get('http://127.0.0.1:8000/crm/test/list').then(function (res) {
 
                     console.log(res.data.data)
                     vm.items = res.data.data;
@@ -126,7 +126,7 @@
             get_user_info: function () {
 
                 let token = sessionStorage.getItem('login_token')
-                axios.get('http://82.156.110.139:8000/crm/user_info', {
+                axios.get('http://127.0.0.1:8000/crm/user_info', {
                     headers: {
                         'Authorization': token,
                     }
@@ -166,7 +166,7 @@
             var con = editor.getHTML();
             $.ajax({
                 type: "POST",
-                url: "http://82.156.110.139:8000/crm/test/add",
+                url: "http://127.0.0.1:8000/crm/test/add",
                 data: $('form').serialize(),
                 dataType: "json",
                 success: function (data) {

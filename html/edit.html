@@ -18,13 +18,13 @@
         integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa"
         crossorigin="anonymous"></script>
 
-<script src="./editor.md/editormd.min.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
 <script src="node_modules/axios/dist/axios.js"></script>
+<script src="./editor.md/editormd.min.js"></script>
 <style>
 
     .edit_btn {
-
         float: right;
     }
 
@@ -95,22 +95,34 @@
         </div><!-- /.container-fluid -->
     </nav>
 
-    <div class="edit_btn">
-        <a class="btn btn-default btn-sm" href="#" v-on:click="edit(id)" role="button">编辑</a>
-    </div>
 
-
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <h3 class="panel-title">{{title}}</h3>
+    <form class="form-horizontal" id="postForm">
+        <div class="form-group">
+            <label for="inputEmail3" class="col-sm-2 control-label">标题</label>
+            <div class="col-sm-10">
+                <input type="text"  id="title" name="title" class="form-control" v-bind:value="title"    placeholder="文章标题">
+                <input type="hidden" name="id" v-bind:value="id">
+            </div>
         </div>
-        <div class="panel-body" v-html="content">
+        <div class="form-group">
+            <label for="inputPassword3" class="col-sm-2 control-label">内容</label>
+            <div class="col-sm-10"  id="test-editor">
+                <textarea class="form-control" style="display:none;" name="content"  rows="100"></textarea>
+            </div>
         </div>
-    </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="button" id="sb_btn" v-on:click="save_content" class="btn  sb_btn btn-default">提交</button>
+            </div>
+        </div>
+    </form>
 
 </div>
 
 <script>
+
+
+    var editor;
 
     var  vm=new  Vue({
 
@@ -127,10 +139,18 @@
                 axios.get('http://127.0.0.1:8000/crm/test/detail?id='+id).then(function (res){
                     vm.content=res.data.data.content;
                     vm.title=res.data.data.name;
+                    editor = editormd("test-editor", {
+                        htmlDecode : "style,script,iframe",
+                        width  : "80%",
+                        height : 390,
+                        path: "./editor.md/lib/",
+                        saveHTMLToTextarea : true,
+                        onload:function (){
+                            this.setMarkdown(vm.content)
+                        }
+                    });
+
                 })
-            },
-            edit:function (id){
-                window.location="./edit.html?id="+id;
             },
             get_user_info: function () {
 
@@ -158,20 +178,48 @@
                 vm.is_login=false
                 window.location="./login.html"
 
+            },
+            save_content:function (){
+
+                var  con=editor.getHTML();
+                var token=sessionStorage.getItem("login_token")
+                if (token.length <=0){
+                    alert("用户没有登录无法添加文章！");
+                    return  false;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    headers:{
+                        Authorization:token,
+                    },
+                    url: "http://127.0.0.1:8000/crm/edit",
+                    data: $('form').serialize(),
+                    dataType: "json",
+                    success: function (data) {
+                        if (data.err == 0) {
+                            alert("提交成功")
+                        } else {
+                            alert(data.msg)
+                        }
+                    },
+                    error: function (jqXHR) {
+                        console.log("Error: " + jqXHR.status);
+                    }
+                });
+
             }
+        },
+        mounted:function (){
+            this.$nextTick(function (){
+                vm.get_user_info()
+                vm.id=getQueryString("id")
+                this.info(vm.id);
+            });
+
         }
-
-
     })
 
-    vm.get_user_info()
-    vm.id=getQueryString("id")
-    vm.info(vm.id);
-
-
-    $(function () {
-
-    });
 
     function getQueryString(name) {
         let reg = `(^|&)${name}=([^&]*)(&|$)`
