@@ -77,9 +77,9 @@
                     <li class="dropdown" v-if="is_login">
 
                     </li>
-                    <li class="dropdown" v-else>
-                    <a href="./register.html">注册</a>
-                    </li>
+<!--                    <li class="dropdown" v-else>-->
+<!--                        <a href="./register.html">注册</a>-->
+<!--                    </li>-->
 
 
                 </ul>
@@ -117,7 +117,7 @@
         methods: {
 
             list: function () {
-                axios.get('http://127.0.0.1:8000/crm/test/list').then(function (res) {
+                axios.get('http://82.156.110.139:8000/crm/test/list').then(function (res) {
 
                     console.log(res.data.data)
                     vm.items = res.data.data;
@@ -126,7 +126,7 @@
             get_user_info: function () {
 
                 let token = sessionStorage.getItem('login_token')
-                axios.get('http://127.0.0.1:8000/crm/user_info', {
+                axios.get('http://82.156.110.139:8000/crm/user_info', {
                     headers: {
                         'Authorization': token,
                     }
@@ -143,11 +143,11 @@
                     }
                 })
             },
-            logout:function (){
+            logout: function () {
 
-                sessionStorage.setItem("login_token","")
-                vm.is_login=false
-                window.location="./login.html"
+                sessionStorage.setItem("login_token", "")
+                vm.is_login = false
+                window.location = "./login.html"
 
             }
 
@@ -166,7 +166,7 @@
             var con = editor.getHTML();
             $.ajax({
                 type: "POST",
-                url: "http://127.0.0.1:8000/crm/test/add",
+                url: "http://82.156.110.139:8000/crm/test/add",
                 data: $('form').serialize(),
                 dataType: "json",
                 success: function (data) {

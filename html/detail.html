@@ -29,7 +29,6 @@
     }
 
 
-
 </style>
 <body>
 
@@ -87,9 +86,9 @@
                     <li class="dropdown" v-if="is_login">
 
                     </li>
-                    <li class="dropdown" v-else>
-                        <a href="./register.html">注册</a>
-                    </li>
+<!--                    <li class="dropdown" v-else>-->
+<!--                        <a href="./register.html">注册</a>-->
+<!--                    </li>-->
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
@@ -112,30 +111,30 @@
 
 <script>
 
-    var  vm=new  Vue({
+    var vm = new Vue({
 
-        el:"#app",
-        data:{
-            content:"",
-            title:"",
+        el: "#app",
+        data: {
+            content: "",
+            title: "",
             login_name: '',
             is_login: false,
-            id:0,
+            id: 0,
         },
-        methods:{
-            info:function (id){
-                axios.get('http://127.0.0.1:8000/crm/test/detail?id='+id).then(function (res){
-                    vm.content=res.data.data.content;
-                    vm.title=res.data.data.name;
+        methods: {
+            info: function (id) {
+                axios.get('http://82.156.110.139:8000/crm/test/detail?id=' + id).then(function (res) {
+                    vm.content = res.data.data.content;
+                    vm.title = res.data.data.name;
                 })
             },
-            edit:function (id){
-                window.location="./edit.html?id="+id;
+            edit: function (id) {
+                window.location = "./edit.html?id=" + id;
             },
             get_user_info: function () {
 
                 let token = sessionStorage.getItem('login_token')
-                axios.get('http://127.0.0.1:8000/crm/user_info', {
+                axios.get('http://82.156.110.139:8000/crm/user_info', {
                     headers: {
                         'Authorization': token,
                     }
@@ -152,11 +151,11 @@
                     }
                 })
             },
-            logout:function (){
+            logout: function () {
 
-                sessionStorage.setItem("login_token","")
-                vm.is_login=false
-                window.location="./login.html"
+                sessionStorage.setItem("login_token", "")
+                vm.is_login = false
+                window.location = "./login.html"
 
             }
         }
@@ -165,21 +164,16 @@
     })
 
     vm.get_user_info()
-    vm.id=getQueryString("id")
+    vm.id = getQueryString("id")
     vm.info(vm.id);
 
-
-    $(function () {
-
-    });
 
     function getQueryString(name) {
         let reg = `(^|&)${name}=([^&]*)(&|$)`
         let r = window.location.search.substr(1).match(reg);
-        if (r != null) return unescape(r[2]); return null;
+        if (r != null) return unescape(r[2]);
+        return null;
     }
-
-
 
 
 </script>

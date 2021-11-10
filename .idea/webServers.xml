@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="WebServers">
+    <option name="servers">
+      <webServer id="cc01f424-e123-401f-8c0e-021c5f1f3865" name="我的服务器">
+        <fileTransfer rootFolder="/usr/share/nginx/html" accessType="SFTP" host="82.156.110.139" port="22" sshConfigId="c9a4e1dd-5b81-4685-b6fe-50366eebc09a" sshConfig="root@82.156.110.139:22 password">
+          <advancedOptions>
+            <advancedOptions dataProtectionLevel="Private" keepAliveTimeout="0" passiveMode="true" shareSSLContext="true" />
+          </advancedOptions>
+        </fileTransfer>
+      </webServer>
+    </option>
+  </component>
+</project>

@@ -75,9 +75,9 @@
                     </li>
                     <li class="dropdown" v-if="is_login">
                     </li>
-                    <li class="dropdown" v-else>
-                        <a href="./register.html">注册</a>
-                    </li>
+<!--                    <li class="dropdown" v-else>-->
+<!--                        <a href="./register.html">注册</a>-->
+<!--                    </li>-->
 
                 </ul>
             </div>
@@ -122,7 +122,7 @@
             get_user_info: function () {
 
                 let token = sessionStorage.getItem('login_token')
-                axios.get('http://127.0.0.1:8000/crm/user_info', {
+                axios.get('http://82.156.110.139:8000/crm/user_info', {
                     headers: {
                         'Authorization': token,
                     }
@@ -176,7 +176,7 @@
                 headers:{
                     Authorization:token,
                 },
-                url: "http://127.0.0.1:8000/crm/add",
+                url: "http://82.156.110.139:8000/crm/add",
                 data: $('form').serialize(),
                 dataType: "json",
                 success: function (data) {

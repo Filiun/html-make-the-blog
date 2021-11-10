@@ -136,7 +136,7 @@
         },
         methods:{
             info:function (id){
-                axios.get('http://127.0.0.1:8000/crm/test/detail?id='+id).then(function (res){
+                axios.get('http://82.156.110.139:8000/crm/test/detail?id='+id).then(function (res){
                     vm.content=res.data.data.content;
                     vm.title=res.data.data.name;
                     editor = editormd("test-editor", {
@@ -155,7 +155,7 @@
             get_user_info: function () {
 
                 let token = sessionStorage.getItem('login_token')
-                axios.get('http://127.0.0.1:8000/crm/user_info', {
+                axios.get('http://82.156.110.139:8000/crm/user_info', {
                     headers: {
                         'Authorization': token,
                     }
@@ -193,7 +193,7 @@
                     headers:{
                         Authorization:token,
                     },
-                    url: "http://127.0.0.1:8000/crm/edit",
+                    url: "http://82.156.110.139:8000/crm/edit",
                     data: $('form').serialize(),
                     dataType: "json",
                     success: function (data) {

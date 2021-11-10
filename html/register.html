@@ -143,7 +143,7 @@
 
             register:function (){
 
-                axios.post('http://127.0.0.1:8000/crm/user/register',{"name":vm.name,"nickname":vm.nickname,"pass":vm.password,"confirm_pass":vm.confirm_pass}).then(function (res){
+                axios.post('http://82.156.110.139:8000/crm/user/register',{"name":vm.name,"nickname":vm.nickname,"pass":vm.password,"confirm_pass":vm.confirm_pass}).then(function (res){
 
                     if (res.data.err == 0){
 
